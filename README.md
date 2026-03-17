@@ -61,12 +61,12 @@ clc;
 clear;
 close;
 
-// ---- Fixed Specifications (HPF) ----
-wp = %pi/2;      // Passband frequency (HIGH)
-ws = %pi/4;      // Stopband frequency (LOW)
+// ---- Specifications ----
+wp = %pi/2;      // Passband (HIGH)
+ws = %pi/4;      // Stopband (LOW)
 alphap = 1;      // Passband attenuation (dB)
 alphas = 15;     // Stopband attenuation (dB)
-T = 1;           // Sampling time
+T = 1;
 
 // ---- Prewarping ----
 omegap = (2/T)*tan(wp/2);
@@ -79,12 +79,16 @@ N = ceil(N);
 // ---- Cutoff Frequency ----
 omegac = omegap / ((10^(0.1*alphap)-1)^(1/(2*N)));
 
-// ---- Analog High Pass Filter ----
-hs = analpf(N, 'butt', 'hp', omegac);
+// ---- Analog LPF Prototype ----
+hs = analpf(N, 'butt', [0,0], 1);   // normalized LPF
+
+// ---- LPF → HPF Transformation (IMPORTANT FIX) ----
+s = poly(0, 's');
+hs_hp = horner(hs, omegac ./ s);   // s → wc/s
 
 // ---- Bilinear Transformation ----
 z = poly(0, 'z');
-Hz = horner(hs, (2/T)*((z-1)/(z+1)));
+Hz = horner(hs_hp, (2/T)*((z-1)/(z+1)));
 
 // ---- Frequency Response ----
 HW = frmag(Hz, 512);
@@ -99,14 +103,15 @@ title('Butterworth IIR HPF Frequency Response');
 // ---- Display ----
 disp("Filter Order N = "), disp(N);
 disp("Cutoff Frequency omegac = "), disp(omegac);
-disp("Digital Transfer Function H(z) = "), disp(Hz);
+disp("H(z) = "), disp(Hz);
+
 ```
 
 ## OUTPUT (LPF) : 
 <img width="763" height="723" alt="image" src="https://github.com/user-attachments/assets/344667fe-b937-41da-a6fb-7edcb2346f02" />
 
 ## OUTPUT (HPF) : 
-<img width="755" height="719" alt="image" src="https://github.com/user-attachments/assets/7b7d056f-fff3-4db7-96bb-51bc44247c28" />
+<img width="759" height="722" alt="image" src="https://github.com/user-attachments/assets/6307607d-13c6-44ea-9fd9-b4d48817626e" />
 
 ## RESULT: 
 Thus, the IIR Butterworth Low Pass Filter (LPF) and High Pass Filter (HPF) were plotted and output was verified.
