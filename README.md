@@ -108,10 +108,10 @@ disp("H(z) = "), disp(Hz);
 ```
 
 ## OUTPUT (LPF) : 
-<img width="763" height="523" alt="image" src="https://github.com/user-attachments/assets/344667fe-b937-41da-a6fb-7edcb2346f02" />
+<img width="763" height="323" alt="image" src="https://github.com/user-attachments/assets/344667fe-b937-41da-a6fb-7edcb2346f02" />
 
 ## OUTPUT (HPF) : 
-<img width="759" height="522" alt="image" src="https://github.com/user-attachments/assets/6307607d-13c6-44ea-9fd9-b4d48817626e" />
+<img width="759" height="322" alt="image" src="https://github.com/user-attachments/assets/6307607d-13c6-44ea-9fd9-b4d48817626e" />
 
 ## RESULT: 
 Thus, the IIR Butterworth Low Pass Filter (LPF) and High Pass Filter (HPF) were plotted and output was verified.
